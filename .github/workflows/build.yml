@@ -22,7 +22,7 @@ jobs:
           #        uses: docker/build-push-action@v2
           #        with:
           #          push: true
-          #          tags: ghcr.io/erebe/wstunnel:builder-cache
+          #          tags: ghcr.io/terranblake/wstunnel:builder-cache
           #          target: builder-cache
 
       - name: wstunnel
@@ -30,11 +30,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ghcr.io/erebe/wstunnel:latest
+          tags: ghcr.io/terranblake/wstunnel:latest
        
           #      - name: extract Artifact
           #        run: |
-          #          docker run --rm -v $(pwd):/data ghcr.io/erebe/wstunnel:latest /bin/cp /wstunnel /data/
+          #          docker run --rm -v $(pwd):/data ghcr.io/terranblake/wstunnel:latest /bin/cp /wstunnel /data/
           #          ./wstunnel
           #  
           #      - uses: actions/upload-artifact@v1
