@@ -16,31 +16,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-
-          #      - name: wstunnel-builder-cache
-          #        id: docker_build_wstunnel-cache
-          #        uses: docker/build-push-action@v2
-          #        with:
-          #          push: true
-          #          tags: ghcr.io/terranblake/wstunnel:builder-cache
-          #          target: builder-cache
-
       - name: wstunnel
         id: docker_build_wstunnel
         uses: docker/build-push-action@v2
         with:
+          context: .
+          file: Dockerfile
           push: true
-          tags: ghcr.io/terranblake/wstunnel:latest
-       
-          #      - name: extract Artifact
-          #        run: |
-          #          docker run --rm -v $(pwd):/data ghcr.io/terranblake/wstunnel:latest /bin/cp /wstunnel /data/
-          #          ./wstunnel
-          #  
-          #      - uses: actions/upload-artifact@v1
-          #        with:
-          #          name: wstunnel-linux-x64
-          #          path: wstunnel
+          tags: ghcr.io/terranblake/webhook:latest
+      - name: webhook Image digest
+        run: echo webhook ${{ steps.docker_build_webhook.outputs.digest }}
+      - name: Trigger deployer
+        run: |
+          payload='{ "application_name": "wstunnel", "image_digest": "${{ steps.docker_build_webhook.outputs.digest }}", "image_tag": "latest" }'
+          token='X-Webhook-Token: ${{ secrets.WEBHOOK_SECRET }}'
+          curl -i -X POST -H 'Content-Type: application/json' -H "${token}"  -d "${payload}" https://hooks.terranblake.com/hooks/deploy
           
   build-windows:
     runs-on: windows-latest
