@@ -18,8 +18,8 @@ RUN sed -i 's/lts-16.25/lts-16.4/' stack.yaml && \
 
 
 # Build phase
-# FROM builder-cache as builder
-FROM ghcr.io/terranblake/wstunnel:build-cache as builder
+FROM builder-cache as builder
+# FROM ghcr.io/terranblake/wstunnel:build-cache as builder
 COPY . /mnt
 
 RUN sed -i 's/lts-16.25/lts-16.4/' stack.yaml 
